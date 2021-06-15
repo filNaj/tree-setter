@@ -53,7 +53,7 @@ function TreeSetter.add_character()
             local char_start_row, _, char_end_row, _ = node:range()
             char_end_row = char_end_row + 1
 
-            -- get the type of character which we should add
+            -- get the type of character which we should add.
             -- So for example if we have "@semicolon" in our query, than
             -- "character_type" will be "semicolon", so we know that there
             -- should be a semicolon at the end of the line
@@ -81,6 +81,11 @@ function TreeSetter.add_character()
             if (character_type == "semicolon") and (wanted_character ~= ';') then
                 vim.api.nvim_buf_set_lines(0, char_start_row, char_end_row,
                                            true, {line .. ';', indent_fix})
+
+            elseif (character_type == "semicolon_no_newline")
+                and (wanted_character ~= ';') then
+                vim.api.nvim_buf_set_lines(0, char_start_row, char_end_row,
+                                           true, {line .. ';'})
 
             elseif (character_type == "comma") and (wanted_character ~= ',') then
                 vim.api.nvim_buf_set_lines(0, char_start_row, char_end_row,
