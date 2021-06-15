@@ -38,6 +38,11 @@
     )
 )
 
+;; Query for case statements like
+;;      case 1
+(case_statement
+    value: (_) @double_points
+)
 
 ;; If we are in a condition, than musn't add a semicolon in it! For example
 ;;      if (test()

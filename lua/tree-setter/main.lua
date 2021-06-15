@@ -10,7 +10,9 @@ local helpers = require("tree-setter.helpers")
 -- =====================
 -- Global variables
 -- =====================
-local M = {}
+-- this variable is also known as `local M = {}` which includes the stuff of the
+-- module
+local TreeSetter = {}
 
 -- includes the queries of the current filetype
 local query
@@ -24,7 +26,7 @@ local last_line_num = 0
 -- ==============
 -- Functions
 -- ==============
-function M.add_character()
+function TreeSetter.add_character()
     -- get the current node from the cursor
     local curr_node = ts_utils.get_node_at_cursor(0)
     if not curr_node then
@@ -43,10 +45,11 @@ function M.add_character()
     end_row = end_row + 1
 
     -- now look if some queries fit with the current filetype
-    for _, match, _ in query:iter_matches(parent_node, 0, start_row,
-                                                end_row) do
+    for _, match, _ in query:iter_matches(parent_node, 0, start_row, end_row) do
         for id, node in pairs(match) do
 
+            -- get the "coordinations" of our current line, where we have to
+            -- lookup if we should add a semicolon or not.
             local char_start_row, _, char_end_row, _ = node:range()
             char_end_row = char_end_row + 1
 
@@ -85,6 +88,19 @@ function M.add_character()
 
             elseif (character_type == "double_points")
                 and (wanted_character ~= ':') then
+                -- the indentation has an exception here. Suppose you write
+                -- something like this ("|" represents the cursor):
+                --  
+                --      case 5:|
+                --
+                -- If you hit enter now, than your cursor would land like this:
+                --
+                --      case 5:
+                --          |
+                -- 
+                -- so we have to add the indent given by the `shiftwidth` option
+                -- as well!
+                indent_fix = indent_fix .. (' '):rep(vim.o.shiftwidth)
                 vim.api.nvim_buf_set_lines(0, char_start_row, char_end_row,
                                            false, {line .. ':', indent_fix})
             end
@@ -92,21 +108,21 @@ function M.add_character()
     end
 end
 
-function M.main()
+function TreeSetter.main()
     local line_num = vim.api.nvim_win_get_cursor(0)[1]
 
     -- look if the cursor has changed his line position, if yes, than this
     -- means (normally) that the user pressed the <CR> key => Look which
     -- character we have to add
     if last_line_num ~= line_num then
-        M.add_character()
+        TreeSetter.add_character()
     end
 
     -- refresh the old cursor position
     last_line_num = line_num
 end
 
-function M.attach(bufnr, lang)
+function TreeSetter.attach(bufnr, lang)
     query = queries.get_query(lang, 'tsetter')
 
     -- if there's no query for the current filetype -> Don't do anything
@@ -122,6 +138,6 @@ function M.attach(bufnr, lang)
     ]])
 end
 
-function M.detach(bufnr) end
+function TreeSetter.detach(bufnr) end
 
-return M
+return TreeSetter
