@@ -24,7 +24,6 @@
     type: (_) @semicolon
 )
 
-
 ;; --------------
 ;; Functions
 ;; --------------
@@ -74,7 +73,16 @@
 ;;      integer--
 ;;  or  integer++
 (update_expression
-    argument: (_) @semicolon_no_newline
+    argument: (_) @semicolon
+)
+
+;; ---------------------
+;; Return statement
+;; ---------------------
+;; Well... just return statements... like
+;;      return 0
+(return_statement
+    (_) @semicolon
 )
 
 ;; ==========
@@ -87,4 +95,4 @@
 ;;      if (...
 ;; Then we're having `ERROR` instead of `if_statement` since treesitter can't
 ;; detect it as an if-statement.
-(ERROR ["if" "while" "for" "else"] "(" @skip)
+(ERROR ["if" "while" "for"] "(" @skip)

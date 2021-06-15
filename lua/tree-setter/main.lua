@@ -2,11 +2,11 @@
 -- Requirements
 -- =================
 local queries = require("vim.treesitter.query")
+local ts_utils = require("nvim-treesitter.ts_utils")
+
 -- all functions, which can modify the buffer, like adding the semicolons and
 -- commas
-local ts_utils = require("nvim-treesitter.ts_utils")
-local helpers = require("tree-setter.helpers")
-
+local setter = require("tree-setter.setter")
 -- =====================
 -- Global variables
 -- =====================
@@ -50,8 +50,7 @@ function TreeSetter.add_character()
 
             -- get the "coordinations" of our current line, where we have to
             -- lookup if we should add a semicolon or not.
-            local char_start_row, _, char_end_row, _ = node:range()
-            char_end_row = char_end_row + 1
+            local char_start_row, _, _, _ = node:range()
 
             -- get the type of character which we should add.
             -- So for example if we have "@semicolon" in our query, than
@@ -65,49 +64,13 @@ function TreeSetter.add_character()
                 return
             end
 
-            -- get the last character to know if there's already the needed
-            -- character or not
-            local line = vim.api.nvim_buf_get_lines(0, char_start_row,
-                                                    char_end_row, false)[1]
-            local wanted_character = line:sub(-1)
-
-            -- since we're changing the previous line (after hitting enter) vim
-            -- will move the indentation of the current line as well. This
-            -- variable stores the indent of the previous line which will be
-            -- added after adding the given line with the semicolon/comma/double
-            -- point.
-            local indent_fix = (' '):rep(vim.fn.indent(char_start_row + 1))
-
-            if (character_type == "semicolon") and (wanted_character ~= ';') then
-                vim.api.nvim_buf_set_lines(0, char_start_row, char_end_row,
-                                           true, {line .. ';', indent_fix})
-
-            elseif (character_type == "semicolon_no_newline")
-                and (wanted_character ~= ';') then
-                vim.api.nvim_buf_set_lines(0, char_start_row, char_end_row,
-                                           true, {line .. ';'})
-
-            elseif (character_type == "comma") and (wanted_character ~= ',') then
-                vim.api.nvim_buf_set_lines(0, char_start_row, char_end_row,
-                                           false, {line .. ',', indent_fix})
-
-            elseif (character_type == "double_points")
-                and (wanted_character ~= ':') then
-                -- the indentation has an exception here. Suppose you write
-                -- something like this ("|" represents the cursor):
-                --  
-                --      case 5:|
-                --
-                -- If you hit enter now, than your cursor would land like this:
-                --
-                --      case 5:
-                --          |
-                -- 
-                -- so we have to add the indent given by the `shiftwidth` option
-                -- as well!
-                indent_fix = indent_fix .. (' '):rep(vim.o.shiftwidth)
-                vim.api.nvim_buf_set_lines(0, char_start_row, char_end_row,
-                                           false, {line .. ':', indent_fix})
+            -- Add the given character to the given line
+            if character_type == 'semicolon' then
+                setter.set_character(0, char_start_row, ';')
+            elseif character_type == 'comma' then
+                setter.set_character(0, char_start_row, ',')
+            elseif character_type == 'double_points' then
+                setter.set_character(0, char_start_row, ':')
             end
         end
     end
@@ -138,7 +101,7 @@ function TreeSetter.attach(bufnr, lang)
     vim.cmd([[
         augroup TreeSetter
         autocmd!
-        autocmd TextChangedI * lua require("tree-setter.main").main()
+        autocmd CursorMoved,CursorMovedI * lua require("tree-setter.main").main()
         augroup END
     ]])
 end
