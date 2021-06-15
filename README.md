@@ -1,11 +1,29 @@
-# module-template
-A repository template to create you own nvim-treesitter module !
+# WARNING
+This module is still in a VEEERY young state and works only for the C
+programming language!
 
-Please find below the list of things you will need to do to get going !
+# TreeSetter
+TreeSetter is a
+[nvim-treesitter-module](https://github.com/nvim-treesitter/module-template)
+which **adds semicolons (`;`), commas (`,`) and double points (`:`) automatically**
+for you, if you hit enter at the end of a line!
 
-# TODO (for you)
-After using this template, you will need to :
- - [ ] Rename every from `example-module` to the actual name of your module
- - [ ] Maybe rename the queries.
- - [ ] Send us a message here : [![Gitter](https://badges.gitter.im/nvim-treesitter/community.svg)](https://gitter.im/nvim-treesitter/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
- - [ ] Code your module !
+# Installation
+With [vim-plug](https://github.com/junegunn/vim-plug):
+
+```vim
+Plug 'TornaxO7/tree-setter'
+```
+
+Add this into your `treesitter`-settings:
+```lua
+require('nvim-treesitter.configs').setup {
+    -- your other modules ...
+
+    tree_setter = {
+        enable = true
+    },
+
+    -- your other modules ...
+}
+```
