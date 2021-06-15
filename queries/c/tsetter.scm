@@ -20,12 +20,12 @@
 ;; Adds semicolon for function calls.
 ;; Example:
 ;;      my_func()
-((ERROR
+(ERROR
     (call_expression
         function: (identifier)
         arguments: (argument_list) @semicolon
     )
-) @test_case)
+)
 
 ;; This is used for known functions like
 ;;      printf("welp")
@@ -37,3 +37,13 @@
         arguments: (argument_list) @semicolon
     )
 )
+
+
+;; If we are in a condition, than musn't add a semicolon in it! For example
+;;      if (test()
+;; So here are all "exception" cases. We have the query `ERROR` here, because if
+;; we have a condition like
+;;      if (...
+;; Then we're having `ERROR` instead of `if_statement` since treesitter can't
+;; detect it as an if-statement.
+(ERROR ["if" "while" "for" "else"] "(" @skip)
