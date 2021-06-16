@@ -6,7 +6,7 @@
 ;; ===============
 ;; Expression statements like
 ;;      std::cout << "TreeSetter, noice!" << std::endl
-(binary_expression
+((binary_expression
     left: (_)
-    right: (_) @semicolon_no_newline
-)
+    right: (_)
+) @semicolon)

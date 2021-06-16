@@ -51,14 +51,14 @@ function Setter.set_character(bufnr, line_num, end_column, character)
     -- character or not
     local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
     -- in this part, we're looking at the certain index where the
-    -- semicolon/comma/... should be, if there's already one.
+    -- semicolon/comma/... should be, for example if there's already one.
     -- We have two cases which for the following two example cases
     --
-    --  1. Case:
+    --  1. example case:
     --
     --      for (int a = 0; a < 10; a++)
     --
-    --  2. Case:
+    --  2. example case:
     --      
     --      int a
     --

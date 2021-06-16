@@ -36,11 +36,6 @@
     right: (_)
 ) @semicolon)
 
-; ((init_declarator
-;     declarator: (_)
-;     value:(_)
-; ) @semicolon)
-
 ;; --------------
 ;; Functions
 ;; --------------
@@ -82,6 +77,15 @@
 ((case_statement
     value: (_)
 ) @double_points)
+
+;; -----------
+;; Macros
+;; -----------
+;; Places a semicolon after a macro call like "free()"
+((macro_type_specifier
+    name: (_)
+    type: (_)
+) @semicolon)
 
 ;; ----------------------
 ;; Other expressions
