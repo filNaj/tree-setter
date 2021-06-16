@@ -9,8 +9,8 @@ of how to open the table of contents:
 ## General
 Thank you for wanting to write some queries in order to fill up more cases where
 a semicolon/comma/double point has to be set! :)
-This should be a little guide how to write them, which should help you to
-improve tree-setter!
+This should be a little guide on how to write them, which should help you to
+improve `tree-setter`!
 
 ### Filestructure
 Let's start with the file structure first, so you know where to write the
@@ -65,7 +65,7 @@ TreeSitter know that this is a declaration? Well, I'm using
 that. Let's create a new C-file and open up the playground! It'll look like
 this:
 
-[[https://github.com/TornaxO7/tree-setter/blob/master/Documentation_Images/TreeSitterPlayground_C_Example.png|alt=C examle]]
+![C query example](./Documentation_Images/TreeSitterPlayground_C_Example.png)
 
 As you can see, there's a similiar structure on the playground:
 
@@ -111,7 +111,7 @@ follows:
 
 This will place a comma after a declaration instead of a semicolon:
 
-[[https://github.com/TornaxO7/tree-setter/blob/master/Documentation_Images/C_Example.png|alt=Example]]
+![C example with a semicolon](./Documentation_Images/C_Example.png)
 
 One "exception" is the `@skip` predicate. As the name says, you say TreeSitter,
 that it should *not* check in the current query if a query matches. This happens
@@ -127,11 +127,23 @@ after `test()` if you would hit the enter key now! This is not what we want! So
 `tree-setter` should skip this part, that's the usage of this `@skip`.
 
 Now you should be able to write some queries for your language now! :)
-Please follow the [query-code-styles](https://github.com/TornaxO7/tree-setter/blob/master/CONTRIBUTING.md#query-code-style) to make it better to maintain and better to
-understand before creating a pull request ;)
+Please follow the
+[query-code-styles](./CONTRIBUTING.md#query-code-style) (below)
+to make it better to maintain and better to understand before creating a pull
+request ;)
 
-#### Special cases
-##### The ERROR node
+### Tips
+#### General
+If you want to know more on how to write queries, than you can read it from the
+[official
+docs](https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax).
+This should explain you some more features and tricks on how to write them :)
+
+I also recommend to read through `:h lua-treesitter-query` which explains it
+partially as well.
+
+
+#### "Weird" queries
 Some queries might be pretty problematic... Look at this query for example (also
 from the query file of C):
 
