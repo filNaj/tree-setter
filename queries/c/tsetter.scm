@@ -13,7 +13,7 @@
 ;; added, so we have to use the query below for these cases.
 (declaration
     type: (_)
-    declarator: (_) @comma
+    declarator: (_) @semicolon
 )
 
 ;; Query for "special" variable declaration like the `long` type as descriped
