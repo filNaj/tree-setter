@@ -4,7 +4,9 @@ the title suits your intention.
 
 # Write Queries
 ## General
-There's a little "tutorial" in the [wiki] for writing it. Take a look into it!
+There's a little "tutorial" in the
+[wiki](https://github.com/TornaxO7/tree-setter/wiki/Expand-Queries-for-tree-setter)
+for writing it. Take a look into it!
 
 ## Query-Code-Style
 Please write the queries in the following style:
