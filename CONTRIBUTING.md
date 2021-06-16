@@ -4,9 +4,146 @@ the title suits your intention.
 
 # Write Queries
 ## General
-There's a little "tutorial" in the
-[wiki](https://github.com/TornaxO7/tree-setter/wiki/Expand-Queries-for-tree-setter)
-for writing it. Take a look into it!
+Thank you for wanting to write some queries in order to fill up more cases where
+a semicolon/comma/double point has to be set! :)
+This should be a little guide how to write them, which should help you to
+improve tree-setter!
+
+### Filestructure
+Let's start with the file structure first, so you know where to write the
+queries:
+
+```
+tree-setter
+└── queries
+   ├── c
+   │   └── tsetter.scm
+   ├── cpp
+   │   └── tsetter.scm
+   └── lua
+       └── tsetter.scm
+```
+
+The interesting directory is `tree-setter/queries` which includes all queries
+for their appropriate language. Each directory (for the language) has a
+`tsetter.scm` file. They *have* to be named as that since `tree-setter` assumes
+that the files are named like that! To sum it up:
+
+1. Look if a directory with the language name exists or not
+    - If yes => Navigate into it
+    - Otherwise => Create it
+2. Look if there's already a `tsetter.scm` file
+    - If yes => Open it in ~~your favourite editor~~ neovim!
+    - Otherwise => Create it!
+
+### Writing queries
+#### Crash-Course
+So now we're getting into the interesting part!
+I'm using C as the example language here since it's pretty mature. If you want
+to see more details about the queries (of C), open
+`tree-setter/queries/c/tsetter.scm` in ~~your text-editor~~ neovim (hint, it's
+probably worth it, since they include some comments which should make it
+understandable) ;).
+
+Let's take a look into the following query-code:
+
+```scheme
+(declaration
+    type: (_)
+    declarator: (_) @semicolon
+)
+```
+
+We can see a code-tree-structure like code. If you take a look into the tsetter
+file of the C language, you'll see that I picked the first query of it.
+But how did I found out that the query has to look like this in order to let
+TreeSitter know that this is a declaration? Well, I'm using
+[nvim-treesitter/playground](https://github.com/nvim-treesitter/playground) for
+that. Let's create a new C-file and open up the playground! It'll look like
+this:
+
+[[https://github.com/TornaxO7/tree-setter/blob/master/Documentation_Images/TreeSitterPlayground_C_Example.png|alt=C examle]]
+
+As you can see, there's a similiar structure on the playground:
+
+```scheme
+declaration [1, 4] - [1, 10]
+    type: primitive_type [1, 4] - [1, 7]
+    declarator: identifier [1, 8] - [1, 9]
+```
+
+very nice! So all we need to do, is just writing this query down as it's
+displayed in the playground.
+
+**Note:** Make sure that you removed the semicolon, because sometimes TreeSitter parses
+the query *differently* if there's a semicolon or not!
+
+`(_)` are used, because according to the
+[docs](https://tree-sitter.github.io/tree-sitter/using-parsers#named-vs-anonymous-nodes)
+we can create anonymous nodes. But why? Well, `type` needn't to be always a
+`primitve_type` (here an `int`). It could also be a char or something else, we
+don't know. So we are using an anonymous node!
+
+Ok, but how does the module know if it should add a semicolon, comma or a double
+point? Well, we are doing this by adding this `@`-thing which is called a
+"predicate". Just write after the `@` which character has to be add. If there
+should be a comma instead of a semicolon, then write `@comma` instead. There are
+four different predicates for this module which you can use:
+
+- `@semicolon`
+- `@comma`
+- `@double_points`
+- `@skip`
+
+Each predicate refers to their appropriate character as the name says. So if
+there should be a comma after a declaration instead, than you can write it as
+follows:
+
+```scheme
+(declaration
+    type: (_)
+    declarator: (_) @comma
+)
+```
+
+This will place a comma after a declaration instead of a semicolon:
+
+[[https://github.com/TornaxO7/tree-setter/blob/master/Documentation_Images/C_Example.png|alt=Example]]
+
+One "exception" is the `@skip` predicate. As the name says, you say TreeSitter,
+that it should *not* check in the current query if a query matches. This happens
+for example in the following case (also described in the last lines of the
+`tsetter.scm` file in C):
+
+```c
+if (test()
+```
+
+without the last query from the C queries, `tree-setter` would add a semicolon
+after `test()` if you would hit the enter key now! This is not what we want! So
+`tree-setter` should skip this part, that's the usage of this `@skip`.
+
+Now you should be able to write some queries for your language now! :)
+Please follow the [query-code-styles](https://github.com/TornaxO7/tree-setter/blob/master/CONTRIBUTING.md#query-code-style) to make it better to maintain and better to
+understand before creating a pull request ;)
+
+#### Special cases
+##### The ERROR node
+Some queries might be pretty problematic... Look at this query for example (also
+from the query file of C):
+
+```scheme
+((ERROR
+    (call_expression
+        function: (identifier)
+        arguments: (argument_list)
+    )
+) @semicolon)
+```
+
+This query is used to indicate a user-function which is called. Yes it might
+look weird, but that's how TreeSitter evaluates the code if the semicolon is
+missing, so keep an eye on the playground what it's displaying!
 
 ## Query-Code-Style
 Please write the queries in the following style:
@@ -45,4 +182,62 @@ Here's an example of a C query of `tree-setter/queries/c/tsetter.scm`:
 ```
 
 # Expanding/Improving tree-setter code
-TODO
+So this is gonna be about the backend of `tree-setter`. You'll get a rough
+overview of how the code works in order to be able to extend the code! So let's
+start with the filestructure first!
+
+## Filestructure
+Here is the Filestructure with the most important files and a little description
+for them on the right:
+
+```
+tree-setter
+├── CONTRIBUTING.md         The document you're reading
+├── Documentation_Images    All images which are used in the documentation
+├── lua                     The "heart" directory of this module
+│   ├── tree-setter         
+│   │   ├── main.lua        This file includes the main functions of the
+│   │   │                       module like checking if any queries match for
+│   │   │                       the current file or not and looking if the user
+│   │   │                       hit enter.
+│   │   └── setter.lua      This file holds only one function, which will add
+│   │                           the appropriate character to the given line.
+│   └── tree-setter.lua     Includes the entry point for a treesitter module
+│                              (here: tree-setter)
+├── plugin
+│   └── tree-setter.vim     Nothing special here, it just calls the
+│                               preparation function for the treesitter module
+└── queries                 As explained in the previous "chapter" this
+                                directory includes all queries for the given
+                                filetype
+```
+
+So let's move on to the steps!
+
+## General
+When the user starts neovim, the init function in
+`tree-setter/lua/tree-setter.lua` is called which will look, if we have a
+query for the current language and looks, where the main-entry-point of the
+module is. Here it's `tree-setter/lua/tree-setter/main.lua`.
+
+So now we're mostly in the `tree-setter/lua/tree-setter/main.lua` file.
+TreeSitter will call the `TreeSetter.attach()` function which will load the
+appropriate query for our current language and prepares the autocommands.
+
+`tree-setter` needs to check if the user hits the enter-key. But how can we
+check, if the user pressed the enter key? Well, if the user pressed the enter
+key, than the cursor will move one line down. That's how `tree-setter` tries to
+detect if the enter-key is pressed without mapping any keys!
+
+The `TreeSetter.main()` function will check if the enter-key is hit, if yes, the
+next function comes in: `TreeSetter.add_character()`. This just picks up the
+node of the current cursor position and the parent to get a range to test which
+queries match or not.
+
+If we found a match, we're looking which kind of character we need to add
+according to their predicate name like `@semicolon` or @comma`. `@skip` will
+stop the process which tests which queries matches.
+
+In general that's it. Take a look into the comments of the code, to get a more
+detailed explanation. I hope that it roughly helped you to understand the
+backend. Feel free to ask by creating a new issue :)

@@ -14,7 +14,7 @@ local setter = require("tree-setter.setter")
 -- module
 local TreeSetter = {}
 
--- includes the queries of the current filetype
+-- includes the queries which match with the current filetype
 local query
 
 -- this variable stores the last line num where the cursor was.
@@ -97,12 +97,7 @@ function TreeSetter.update_cursor_state()
 end
 
 function TreeSetter.attach(bufnr, lang)
-    query = queries.get_query(lang, 'tsetter')
-
-    -- if there's no query for the current filetype -> Don't do anything
-    if not query then
-        return
-    end
+    query = queries.get_query(lang, "tsetter")
 
     vim.cmd([[
         augroup TreeSetter

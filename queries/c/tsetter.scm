@@ -94,7 +94,7 @@
 ) @semicolon)
 
 ;; Query for break statements
-;; Tressitter sees a line with "break" only if there's already a semicolon!
+;; Treesitter sees a line with "break", only if there's already a semicolon!
 ;; Otherwise it'll display it as "ERROR" so we need to compare it on our own if
 ;; it's a break statement.
 (ERROR "break" @semicolon)
