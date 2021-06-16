@@ -9,7 +9,7 @@ which **adds semicolons (`;`), commas (`,`) and double points (`:`) automaticall
 for you, if you hit enter at the end of a line!
 
 # Demo
-![demonstration](demo.gif)
+![demonstration](./Documentation_Images/demo.gif)
 
 As you can see from in the key-screen-bar
 [screenkey](https://gitlab.com/screenkey/screenkey) I almost never pressed the
@@ -35,3 +35,6 @@ require('nvim-treesitter.configs').setup {
     -- your other modules ...
 }
 ```
+
+# Contributing
+Take a look into the [CONTRIBUTING.md](./CONTRIBUTING.md) file for that ;)
