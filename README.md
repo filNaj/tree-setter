@@ -9,7 +9,7 @@ which **adds semicolons (`;`), commas (`,`) and double points (`:`) automaticall
 for you, if you hit enter at the end of a line!
 
 # Demo
-![demo](./Demo.mp4)
+![demonstration](Demo.mp4)
 
 As you can see from in the key-screen-bar
 [screenkey](https://gitlab.com/screenkey/screenkey) I almost never pressed the
