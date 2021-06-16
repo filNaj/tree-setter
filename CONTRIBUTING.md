@@ -3,7 +3,7 @@ There are different ways to contribute to this project. Pick up the section from
 the table of contents if the title suits your intention. Here's a little image
 of how to open the table of contents:
 
-[[https://github.com/TornaxO7/tree-setter/blob/master/Documentation_Images/OpenTOC.png]]
+!(TOC Image)[./Documentation_Images/OpenTOC.png]
 
 # Write Queries
 ## General
