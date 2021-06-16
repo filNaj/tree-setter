@@ -41,7 +41,7 @@ function Setter.set_character(bufnr, line_num, end_column, character)
     --      case 5:
     --      |
     -- 
-    -- so we have to add the indent given by the `shiftwidth` option
+    -- so we have to adjust the indent, given by the `shiftwidth` option
     -- as well!
     if character == ':' then
         indent_fix = indent_fix .. (' '):rep(vim.o.shiftwidth)
@@ -50,9 +50,17 @@ function Setter.set_character(bufnr, line_num, end_column, character)
     -- get the last character to know if there's already the needed
     -- character or not
     local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
+
     -- in this part, we're looking at the certain index where the
-    -- semicolon/comma/... should be, for example if there's already one.
-    -- We have two cases which for the following two example cases
+    -- semicolon/comma/... should be, in order to know if there's already our
+    -- desired character or not.
+    -- We have two different approaches on how to check that. The first case is,
+    -- that the query is in the middle of the line and not at the end of a
+    -- line, so we can directly lookup the character at it's position. The
+    -- second case is, when our query is the last part of a line, trying to
+    -- access the character with an index would resolve to an
+    -- index-out-of-bounds, so we're picking up the last character of the line.
+    -- Here are two examples to the two cases:
     --
     --  1. example case:
     --

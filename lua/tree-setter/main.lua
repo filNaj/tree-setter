@@ -7,6 +7,7 @@ local ts_utils = require("nvim-treesitter.ts_utils")
 -- all functions, which can modify the buffer, like adding the semicolons and
 -- commas
 local setter = require("tree-setter.setter")
+
 -- =====================
 -- Global variables
 -- =====================
@@ -18,16 +19,17 @@ local TreeSetter = {}
 local query
 
 -- this variable stores the last line num where the cursor was.
--- It's mainly used as a control variable since we are mainly adding the
--- semicolons, commas and double points when the user presses the enter key,
--- which will change the line number of the cursor
+-- It's mainly used as a control variable to check, if the cursor moved down or
+-- not. Take a look into the "TreeSitter.main()` function to see its usage in
+-- action.
 local last_line_num = 0
 
 -- ==============
 -- Functions
 -- ==============
 function TreeSetter.add_character()
-    -- get the current node from the cursor
+    -- get the relevant nodes to be able to judge the current case (if we need
+    -- to add a semicolon/comma/... or not)
     local curr_node = ts_utils.get_node_at_cursor(0)
     if not curr_node then
         return
@@ -38,21 +40,20 @@ function TreeSetter.add_character()
         return
     end
 
-    -- Reduce the searching-place on the size of the parent node
+    -- Reduce the searching-range on the size of the parent node (and not the
+    -- whole buffer)
     local start_row, _, end_row, _ = parent_node:range()
     -- since the end row is end-*exclusive*, we have to increase the end row by
     -- one
     end_row = end_row + 1
 
-    -- now look if some queries fit with the current filetype
+    -- iterate through all matched queries from the given range
     for _, match, _ in query:iter_matches(parent_node, 0, start_row, end_row) do
         for id, node in pairs(match) do
 
             -- get the "coordinations" of our current line, where we have to
             -- lookup if we should add a semicolon or not.
             local char_start_row, _, _, char_end_column = node:range()
-            -- print(ts_utils.get_node_text(node, 0)[1])
-            print(ts_utils.get_node_range(node))
 
             -- get the type of character which we should add.
             -- So for example if we have "@semicolon" in our query, than
@@ -78,22 +79,20 @@ function TreeSetter.add_character()
     end
 end
 
+-- The main-entry point. Here we are checking the movement of the user and look
+-- if we need to look if we should add a semicolon/comma/... or not.
 function TreeSetter.main()
     local line_num = vim.api.nvim_win_get_cursor(0)[1]
 
-    -- look if the cursor has changed his line position, if yes, than this
-    -- means (normally) that the user pressed the <CR> key => Look which
-    -- character we have to add
+    -- look if the user pressed the enter key by checking if the line number
+    -- increased. If yes, look if we have to add the semicolon/comma/etc. or
+    -- not.
     if last_line_num < line_num then
         TreeSetter.add_character()
     end
 
     -- refresh the old cursor position
     last_line_num = line_num
-end
-
-function TreeSetter.update_cursor_state()
-    last_line_num = vim.api.nvim_win_get_cursor(0)[1]
 end
 
 function TreeSetter.attach(bufnr, lang)
@@ -103,7 +102,6 @@ function TreeSetter.attach(bufnr, lang)
         augroup TreeSetter
         autocmd!
         autocmd CursorMovedI * lua require("tree-setter.main").main()
-        autocmd CursorMoved * lua require("tree-setter.main").update_cursor_state()
         augroup END
     ]])
 end
