@@ -50,7 +50,9 @@ function TreeSetter.add_character()
 
             -- get the "coordinations" of our current line, where we have to
             -- lookup if we should add a semicolon or not.
-            local char_start_row, _, _, _ = node:range()
+            local char_start_row, _, _, char_end_column = node:range()
+            -- print(ts_utils.get_node_text(node, 0)[1])
+            print(ts_utils.get_node_range(node))
 
             -- get the type of character which we should add.
             -- So for example if we have "@semicolon" in our query, than
@@ -66,11 +68,11 @@ function TreeSetter.add_character()
 
             -- Add the given character to the given line
             if character_type == 'semicolon' then
-                setter.set_character(0, char_start_row, ';')
+                setter.set_character(0, char_start_row, char_end_column, ';')
             elseif character_type == 'comma' then
-                setter.set_character(0, char_start_row, ',')
+                setter.set_character(0, char_start_row, char_end_column, ',')
             elseif character_type == 'double_points' then
-                setter.set_character(0, char_start_row, ':')
+                setter.set_character(0, char_start_row, char_end_column, ':')
             end
         end
     end
@@ -82,12 +84,16 @@ function TreeSetter.main()
     -- look if the cursor has changed his line position, if yes, than this
     -- means (normally) that the user pressed the <CR> key => Look which
     -- character we have to add
-    if last_line_num ~= line_num then
+    if last_line_num < line_num then
         TreeSetter.add_character()
     end
 
     -- refresh the old cursor position
     last_line_num = line_num
+end
+
+function TreeSetter.update_cursor_state()
+    last_line_num = vim.api.nvim_win_get_cursor(0)[1]
 end
 
 function TreeSetter.attach(bufnr, lang)
@@ -101,7 +107,8 @@ function TreeSetter.attach(bufnr, lang)
     vim.cmd([[
         augroup TreeSetter
         autocmd!
-        autocmd CursorMoved,CursorMovedI * lua require("tree-setter.main").main()
+        autocmd CursorMovedI * lua require("tree-setter.main").main()
+        autocmd CursorMoved * lua require("tree-setter.main").update_cursor_state()
         augroup END
     ]])
 end

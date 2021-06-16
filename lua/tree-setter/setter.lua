@@ -16,7 +16,7 @@ local Setter = {}
 --	@character: The character which should be added to the line (if it's not
 --	there yet)
 --
-function Setter.set_character(bufnr, line_num, character)
+function Setter.set_character(bufnr, line_num, end_column, character)
     -- since we're changing the previous line (after hitting enter) vim
     -- will move the indentation of the current line as well. This
     -- variable stores the indent of the previous line which will be
@@ -49,15 +49,46 @@ function Setter.set_character(bufnr, line_num, character)
 
     -- get the last character to know if there's already the needed
     -- character or not
-    local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1,
-                                            false)[1]
-    local wanted_character = line:sub(-1)
+    local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
+    -- in this part, we're looking at the certain index where the
+    -- semicolon/comma/... should be, if there's already one.
+    -- We have two cases which for the following two example cases
+    --
+    --  1. Case:
+    --
+    --      for (int a = 0; a < 10; a++)
+    --
+    --  2. Case:
+    --      
+    --      int a
+    --
+    local wanted_character
+    if end_column + 1 < line:len() then
+        -- This is for case 1.
+        -- First sub:
+        --      Go to the part of the query
+        -- Second sub:
+        --      Pick up the last character of the query
+        wanted_character = line:sub(end_column, end_column + 1):sub(-1)
+    else
+        -- In this case the query is the has the last part of the line as well
+        -- so we can just pick up the last character of the whole line (see
+        -- example case 2)
+        wanted_character = line:sub(-1)
+    end
 
     -- is our character already placed? If not => Place it!
-    if wanted_character ~= character then
+    --
+    -- The second condition is used, to check cases like this:
+    --
+    --      for (int var = 0; var < 10; var++)
+    --
+    --  Without the second condition, we'd let `var++` enter this condition,
+    --  which would add a semicolon after the `)`.
+    if (wanted_character ~= character) and (wanted_character ~= ')') then
         -- we need the "+ 2" here, because:
-        --  1. The end-line is *exclusive* => + 1
-        --  2. We need to set the next line with our new indentation => + 1
+        --  1. The column-index is *exclusive* => + 1
+        --  2. We need to set even the next line with our new indentation => + 1
         vim.api.nvim_buf_set_lines(0, line_num, line_num + 2, true,
                                    {line .. character, indent_fix})
     end
