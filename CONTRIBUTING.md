@@ -126,6 +126,9 @@ without the last query from the C queries, `tree-setter` would add a semicolon
 after `test()` if you would hit the enter key now! This is not what we want! So
 `tree-setter` should skip this part, that's the usage of this `@skip`.
 
+By the way: It *is* important *where* you but the predicate, because
+`tree-setter` will put the semicolon, etc. on the place of the predicate!
+
 Now you should be able to write some queries for your language now! :)
 Please follow the
 [query-code-styles](./CONTRIBUTING.md#query-code-style) (below)

@@ -37,7 +37,7 @@ function TreeSetter.add_character()
 
     local parent_node = curr_node:parent()
     if not parent_node then
-        return
+        parent_node = curr_node
     end
 
     -- Reduce the searching-range on the size of the parent node (and not the
@@ -54,6 +54,7 @@ function TreeSetter.add_character()
             -- get the "coordinations" of our current line, where we have to
             -- lookup if we should add a semicolon or not.
             local char_start_row, _, _, char_end_column = node:range()
+            print(ts_utils.get_node_text(node, 0)[1])
 
             -- get the type of character which we should add.
             -- So for example if we have "@semicolon" in our query, than
