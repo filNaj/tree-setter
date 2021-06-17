@@ -35,7 +35,7 @@
     ("def")
     (identifier)
     (parameters
-        (identifier)*
+        (identifier)*  ;; it doesn't care how long the parameter list is
         ")"
         @double_points
     )

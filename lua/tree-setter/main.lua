@@ -32,6 +32,7 @@ function TreeSetter.add_character()
     -- to add a semicolon/comma/... or not)
     local curr_node = ts_utils.get_node_at_cursor(0)
     if not curr_node then
+        print("oh no")
         return
     end
 
@@ -54,7 +55,7 @@ function TreeSetter.add_character()
             -- get the "coordinations" of our current line, where we have to
             -- lookup if we should add a semicolon or not.
             local char_start_row, _, _, char_end_column = node:range()
-            print(ts_utils.get_node_text(node, 0)[1])
+            print("match")
 
             -- get the type of character which we should add.
             -- So for example if we have "@semicolon" in our query, than
