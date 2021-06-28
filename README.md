@@ -1,3 +1,9 @@
+# HINT
+This project is put into archive because I found out that it's almost impossible
+to achieve an auto-setting "module" by using treesitter, since it parses
+uncompleted code pretty "weird". Anyway, this should mainly work for C files,
+but not for other languages... I'm sorry! :(
+
 # WARNING
 This module is still in a VEEERY young state and works only for the C
 programming language!
