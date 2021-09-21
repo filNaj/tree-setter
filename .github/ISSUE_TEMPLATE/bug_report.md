@@ -1,14 +1,16 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Use this template if you found a bug!
 title: ''
 labels: ''
-assignees: ''
+assignees: TornaxO7
 
 ---
 
 # Example code
-<!-- Enter the code where the bug appears -->
 
-# Context
-<!-- Add a little description about your problem please -->
+```
+```
+
+
+# Live example (optional)
