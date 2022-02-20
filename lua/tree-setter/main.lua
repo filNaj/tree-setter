@@ -3,6 +3,7 @@
 -- =================
 local queries = require("vim.treesitter.query")
 local ts_utils = require("nvim-treesitter.ts_utils")
+local logger = require("tree-setter.logger")
 
 -- all functions, which can modify the buffer, like adding the semicolons and
 -- commas
@@ -32,7 +33,7 @@ function TreeSetter.add_character()
     -- to add a semicolon/comma/... or not)
     local curr_node = ts_utils.get_node_at_cursor(0)
     if not curr_node then
-        print("oh no")
+        logger.error("Couldn't get the node at the cursor!")
         return
     end
 
@@ -63,7 +64,7 @@ function TreeSetter.add_character()
             local character_type = query.captures[id]
 
             -- so look first, if we reached an "exception" which have the
-            -- "@skip" predicate. 
+            -- "@skip" predicate.
             if character_type == "skip" then
                 return
             end
