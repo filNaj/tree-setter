@@ -55,7 +55,6 @@ function TreeSetter.add_character()
             -- get the "coordinations" of our current line, where we have to
             -- lookup if we should add a semicolon or not.
             local char_start_row, _, _, char_end_column = node:range()
-            print("match")
 
             -- get the type of character which we should add.
             -- So for example if we have "@semicolon" in our query, than

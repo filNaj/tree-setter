@@ -86,7 +86,6 @@ function Setter.set_character(bufnr, line_num, end_column, character)
     --
     --  Without the second condition, we'd let `var++` enter this condition,
     --  which would add a semicolon after the `)`.
-    print("Wanted: " .. wanted_character)
     if (wanted_character ~= character) and (wanted_character ~= ')') then
         -- we need the "+ 2" here, because:
         --  1. The column-index is *exclusive* => + 1

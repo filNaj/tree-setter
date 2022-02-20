@@ -28,13 +28,9 @@
 ;;      class TestClass
 ((ERROR "class" (identifier) .) @double_points)
 
-;; Used for class methods and functions like
+;; Used for class methods like
 ;;
 ;;      def test(self)
-;;
-;; or
-;;
-;;      def test()
 (
     ("def")
     (identifier)
