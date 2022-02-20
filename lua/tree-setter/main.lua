@@ -33,7 +33,6 @@ function TreeSetter.add_character()
     -- to add a semicolon/comma/... or not)
     local curr_node = ts_utils.get_node_at_cursor(0)
     if not curr_node then
-        logger.error("Couldn't get the node at the cursor!")
         return
     end
 
