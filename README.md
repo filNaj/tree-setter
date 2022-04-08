@@ -1,7 +1,8 @@
 # WARNING
 This module is still in a VEEERY young state and works only (partially) for the
 C programming language! So be prepared for a lot of bugs if you're trying it
-out!
+out! If you want to know a little bit more, then you can read [this
+issue-message](https://github.com/TornaxO7/tree-setter/issues/1#issuecomment-1025161228).
 
 # TreeSetter
 TreeSetter is a

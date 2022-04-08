@@ -3,7 +3,6 @@
 -- =================
 local queries = require("vim.treesitter.query")
 local ts_utils = require("nvim-treesitter.ts_utils")
-local logger = require("tree-setter.logger")
 
 -- all functions, which can modify the buffer, like adding the semicolons and
 -- commas
