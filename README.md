@@ -1,5 +1,6 @@
 # WARNING
-This module is still in a VEEERY young state and works only (partially) for the
+This module is still in a VEEERY young state and works only (partially, let's
+rather say *barely* workking) for the
 C programming language! So be prepared for a lot of bugs if you're trying it
 out! If you want to know a little bit more, then you can read [this
 issue-message](https://github.com/TornaxO7/tree-setter/issues/1#issuecomment-1025161228).
@@ -40,3 +41,9 @@ require('nvim-treesitter.configs').setup {
 
 # Contributing
 Take a look into the [CONTRIBUTING.md](./CONTRIBUTING.md) file for that ;)
+
+# Other information
+## Why so less commits?
+The problem is, that treesitter gives different results if the syntax is wrong
+which makes it really hard to write the queries. So we have to wait until it
+stabilizes that.
