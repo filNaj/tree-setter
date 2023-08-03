@@ -21,6 +21,19 @@
     )
 ) @semicolon)
 
+;; functions calls 
+;;      Ex: func()  
+((expression_statement
+  (_)
+) @semicolon)
+
+((ERROR
+  (method_invocation
+    name: (identifier)
+    arguments: (argument_list)
+  )
+) @semicolon)
+
 ;; methods
 ;;      this.client.configure(config);
 ((expression_statement
