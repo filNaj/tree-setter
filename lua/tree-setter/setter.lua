@@ -50,6 +50,17 @@ function Setter.set_character(bufnr, line_num, end_column, character)
     -- get the last character to know if there's already the needed
     -- character or not
     local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
+  
+    local trimmed_line = line:sub(1, end_column):gsub('^%s+', '') -- Trim leading spaces
+    -- If the character to be added is a semicolon and the line is not empty,
+    -- and the line ends with a closing parenthesis, insert a semicolon.
+    if character == ';' and trimmed_line ~= '' and trimmed_line:sub(-1) == ')' then
+          vim.api.nvim_buf_set_lines(0, line_num, line_num + 2, false,
+                                     {line .. character, indent_fix})
+        return
+    end
+
+
     -- in this part, we're looking at the certain index where the
     -- semicolon/comma/... should be, for example if there's already one.
     -- We have two cases which for the following two example cases
