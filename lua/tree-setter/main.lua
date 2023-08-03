@@ -96,7 +96,7 @@ function TreeSetter.main()
 end
 
 function TreeSetter.attach(bufnr, lang)
-    query = queries.get_query(lang, "tsetter")
+    query = queries.get(lang, "tsetter")
 
     vim.cmd([[
         augroup TreeSetter
