@@ -74,12 +74,11 @@ function TreeSetter.add_character()
                 setter.set_character(0, char_start_row, char_end_column, ',')
             elseif character_type == 'double_points' then
                 setter.set_character(0, char_start_row, char_end_column, ':')
-            elseif character_type == 'equals' then
-                setter.set_character(0, char_start_row, char_end_column, '=')
             end
         end
     end
 end
+
 
 -- The main-entry point. Here we are checking the movement of the user and look
 -- if we need to look if we should add a semicolon/comma/... or not.
@@ -90,12 +89,50 @@ function TreeSetter.main()
     -- increased. If yes, look if we have to add the semicolon/comma/etc. or
     -- not.
     if last_line_num < line_num then
-        TreeSetter.add_character()
+      TreeSetter.add_character()
+
+    -- look if the user pressed on the space bar key by checking if the line 
+    -- number hasn't changed. 
+    elseif last_line_num == line_num then
+      TreeSetter.add_same_line_character()
     end
 
     -- refresh the old cursor position
     last_line_num = line_num
 end
+
+
+-- this will add an equals sign on the same line
+function TreeSetter.add_same_line_character()
+    local curr_node = ts_utils.get_node_at_cursor(0)
+    if not curr_node then
+        return
+    end
+
+    local parent_node = curr_node:parent()
+    if not parent_node then
+        parent_node = curr_node
+    end
+
+    local start_row, _, end_row, _ = parent_node:range()
+    end_row = end_row + 1
+
+    for _, match, _ in query:iter_matches(parent_node, 0, start_row, end_row) do
+        for id, node in pairs(match) do
+            local char_start_row, _, _, char_end_column = node:range()
+            local character_type = query.captures[id]
+
+            if character_type == "skip" then
+                return
+            end
+
+            if character_type == 'equals' then
+                setter.set_character(0, char_start_row, char_end_column, '=')
+            end
+        end
+    end
+end
+
 
 function TreeSetter.attach(bufnr, lang)
     query = queries.get(lang, "tsetter")
