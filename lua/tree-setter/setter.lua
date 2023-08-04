@@ -64,6 +64,19 @@ function Setter.set_character(bufnr, line_num, end_column, character)
         return
     end
 
+    -- If the character to be added is '=', insert it before the cursor
+    if character == '=' then
+        -- Move the cursor to the new position (before the current end_column)
+        vim.api.nvim_win_set_cursor(0, {line_num, end_column})
+
+        -- Update the line by inserting the character at the new cursor position
+        local updated_line = line:sub(1, end_column) .. character .. line:sub(end_column + 1)
+        vim.api.nvim_buf_set_lines(0, line_num, line_num + 1, false, {updated_line})
+
+        -- Move the cursor back to the original position
+        vim.api.nvim_win_set_cursor(0, {line_num + 1, end_column + 1})
+    end
+
 
     -- in this part, we're looking at the certain index where the
     -- semicolon/comma/... should be, for example if there's already one.
