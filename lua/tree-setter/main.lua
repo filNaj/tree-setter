@@ -74,6 +74,8 @@ function TreeSetter.add_character()
                 setter.set_character(0, char_start_row, char_end_column, ',')
             elseif character_type == 'double_points' then
                 setter.set_character(0, char_start_row, char_end_column, ':')
+            elseif character_type == 'equals' then
+                setter.set_character(0, char_start_row, char_end_column, '=')
             end
         end
     end

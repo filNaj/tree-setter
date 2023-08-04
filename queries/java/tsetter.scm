@@ -5,6 +5,14 @@
     declarator: (_) @semicolon
 )
 
+;; Equals for variable declaration
+;;      int x =
+; (local_variable_declaration
+;   type: (_)
+;   declarator: (_
+;     name: (_) @equals)
+; )
+
 ;; fields
 ;;      private Map<String, String> data;
 (field_declaration
