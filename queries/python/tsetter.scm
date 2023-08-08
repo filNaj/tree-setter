@@ -1,3 +1,13 @@
+;; --------------
+;; Variables
+;; --------------
+;; For declarations and initialisations
+;; Example:
+;;      var_name = 10
+(expression_statement
+  (identifier) @equals
+)
+
 ;; ====================
 ;; Lists and Dicts
 ;; ====================
