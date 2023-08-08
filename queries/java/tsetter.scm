@@ -3,7 +3,6 @@
 ; Equals for variable declaration
 ;      int x =
 (local_variable_declaration
-  type: (_)
   declarator: (_
     name: (_) @equals
   ) @semicolon
@@ -12,7 +11,6 @@
 ;; fields
 ;;      private Map<String, String> data;
 (field_declaration
-    type: (_)
     declarator: (_) @semicolon
 )
 
