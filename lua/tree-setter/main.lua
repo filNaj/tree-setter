@@ -27,7 +27,7 @@ local last_line_num = 0
 -- ==============
 -- Functions
 -- ==============
-function TreeSetter.add_character()
+function TreeSetter.add_character(is_equals)
     -- get the relevant nodes to be able to judge the current case (if we need
     -- to add a semicolon/comma/... or not)
     local curr_node = ts_utils.get_node_at_cursor(0)
@@ -67,13 +67,17 @@ function TreeSetter.add_character()
                 return
             end
 
-            -- Add the given character to the given line
-            if character_type == 'semicolon' then
-                setter.set_character(0, char_start_row, char_end_column, ';')
-            elseif character_type == 'comma' then
-                setter.set_character(0, char_start_row, char_end_column, ',')
-            elseif character_type == 'double_points' then
-                setter.set_character(0, char_start_row, char_end_column, ':')
+            if is_equals == true and character_type == 'equals' then
+                setter.set_character(0, char_start_row, char_end_column, '=')
+            elseif is_equals == false then
+              -- Add the given character to the given line
+              if character_type == 'semicolon' then
+                  setter.set_character(0, char_start_row, char_end_column, ';')
+              elseif character_type == 'comma' then
+                  setter.set_character(0, char_start_row, char_end_column, ',')
+              elseif character_type == 'double_points' then
+                  setter.set_character(0, char_start_row, char_end_column, ':')
+              end
             end
         end
     end
@@ -88,50 +92,18 @@ function TreeSetter.main()
     -- if user is still on the same line, then add an eqauls sing '=' where 
     -- necessary.
     if last_line_num == line_num then
-      TreeSetter.add_same_line_character()
+      TreeSetter.add_character(true)
     end
 
     -- look if the user pressed the enter key by checking if the line number
     -- increased. If yes, look if we have to add the semicolon/comma/etc. or
     -- not.
     if last_line_num < line_num then
-      TreeSetter.add_character()
+      TreeSetter.add_character(false)
     end
 
     -- refresh the old cursor position
     last_line_num = line_num
-end
-
-
--- this will add an equals sign on the same line
-function TreeSetter.add_same_line_character()
-    local curr_node = ts_utils.get_node_at_cursor(0)
-    if not curr_node then
-        return
-    end
-
-    local parent_node = curr_node:parent()
-    if not parent_node then
-        parent_node = curr_node
-    end
-
-    local start_row, _, end_row, _ = parent_node:range()
-    end_row = end_row + 1
-
-    for _, match, _ in query:iter_matches(parent_node, 0, start_row, end_row) do
-        for id, node in pairs(match) do
-            local char_start_row, _, _, char_end_column = node:range()
-            local character_type = query.captures[id]
-
-            if character_type == "skip" then
-                return
-            end
-
-            if character_type == 'equals' then
-                setter.set_character(0, char_start_row, char_end_column, '=')
-            end
-        end
-    end
 end
 
 
