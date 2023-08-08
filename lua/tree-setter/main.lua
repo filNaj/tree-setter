@@ -85,16 +85,17 @@ end
 function TreeSetter.main()
     local line_num = vim.api.nvim_win_get_cursor(0)[1]
 
+    -- if user is still on the same line, then add an eqauls sing '=' where 
+    -- necessary.
+    if last_line_num == line_num then
+      TreeSetter.add_same_line_character()
+    end
+
     -- look if the user pressed the enter key by checking if the line number
     -- increased. If yes, look if we have to add the semicolon/comma/etc. or
     -- not.
     if last_line_num < line_num then
       TreeSetter.add_character()
-
-    -- look if the user pressed on the space bar key by checking if the line 
-    -- number hasn't changed. 
-    elseif last_line_num == line_num then
-      TreeSetter.add_same_line_character()
     end
 
     -- refresh the old cursor position

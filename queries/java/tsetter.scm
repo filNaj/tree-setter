@@ -1,16 +1,12 @@
 ;; local variables
 ;;      String s = "";
-(local_variable_declaration
-    type: (_)
-    declarator: (_) @semicolon
-)
-
-;; Equals for variable declaration
-;;      int x =
+; Equals for variable declaration
+;      int x =
 (local_variable_declaration
   type: (_)
   declarator: (_
-    name: (_) @equals)
+    name: (_) @equals
+  ) @semicolon
 )
 
 ;; fields

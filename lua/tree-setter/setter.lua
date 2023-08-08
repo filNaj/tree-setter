@@ -50,12 +50,16 @@ function Setter.set_character(bufnr, line_num, end_column, character)
     -- get the last character to know if there's already the needed
     -- character or not
     local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
+
+    -- make sure that no character is added after the semicolon
+    if line:sub(-1) == ';' then
+        return -- Do nothing
+    end
   
 
-    -- This part is used for inserting a semicolon after calling a custom function 
+    -- Insert a semicolon after calling a custom function 
     -- Example: func(args). It checks for a closing parenthesis.
     local trimmed_line = line:sub(1, end_column):gsub('^%s+', '') -- Trim leading spaces
-
     -- If the character to be added is a semicolon and the line is not empty,
     -- and the line ends with a closing parenthesis, insert a semicolon.
     if character == ';' and trimmed_line ~= '' and trimmed_line:sub(-1) == ')' then
@@ -64,8 +68,16 @@ function Setter.set_character(bufnr, line_num, end_column, character)
         return
     end
 
-    -- If the character to be added is '=', insert it before the cursor
+
+    -- Adjust cursor position after inserting '=', place it before the cursor
+    -- This part is necessary since the only way to check if the user has 
+    -- pressed on the space bar is by checking if he hasn't changed lines.
+    -- And since after inserting the `=` the user is still on the same line
+    -- there is a strange behaviour like multiple '=' are inserted.
     if character == '=' then
+        if line:find('=') then
+          return
+        end
         -- Move the cursor to the new position (before the current end_column)
         vim.api.nvim_win_set_cursor(0, {line_num, end_column})
 
