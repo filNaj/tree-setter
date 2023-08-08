@@ -13,8 +13,12 @@
 ;; added, so we have to use the query below for these cases.
 (declaration
     type: (_)
-    declarator: (_) @semicolon
+    declarator: (_) @equals @semicolon
 )
+; (declaration
+;     type: (_)
+;     declarator: (_) @semicolon
+; )
 
 ;; Query for "special" variable declaration like the `long` type as descriped
 ;; above.
@@ -22,13 +26,13 @@
 ;;      long var_name
 ((sized_type_specifier
     type: (_)
-) @semicolon)
+) @equals @semicolon)
 
 ;; Query for assignments.
 ;; Example:
 ;;      var = 10
 ((assignment_expression
-    left: (identifier)
+    left: (_)
     right: (_)
 ) @semicolon)
 
