@@ -27,6 +27,29 @@ local last_line_num = 0
 -- ==============
 -- Functions
 -- ==============
+-- The main-entry point. Here we are checking the movement of the user and look
+-- if we need to look if we should add a semicolon/comma/... or not.
+function TreeSetter.main()
+    local line_num = vim.api.nvim_win_get_cursor(0)[1]
+
+    -- if user is still on the same line, then add an eqauls sing '=' where 
+    -- necessary.
+    if last_line_num == line_num then
+      TreeSetter.add_character(true)
+    end
+
+    -- look if the user pressed the enter key by checking if the line number
+    -- increased. If yes, look if we have to add the semicolon/comma/etc. or
+    -- not.
+    if last_line_num < line_num then
+      TreeSetter.add_character(false)
+    end
+
+    -- refresh the old cursor position
+    last_line_num = line_num
+end
+
+
 function TreeSetter.add_character(is_equals)
     -- get the relevant nodes to be able to judge the current case (if we need
     -- to add a semicolon/comma/... or not)
@@ -81,29 +104,6 @@ function TreeSetter.add_character(is_equals)
             end
         end
     end
-end
-
-
--- The main-entry point. Here we are checking the movement of the user and look
--- if we need to look if we should add a semicolon/comma/... or not.
-function TreeSetter.main()
-    local line_num = vim.api.nvim_win_get_cursor(0)[1]
-
-    -- if user is still on the same line, then add an eqauls sing '=' where 
-    -- necessary.
-    if last_line_num == line_num then
-      TreeSetter.add_character(true)
-    end
-
-    -- look if the user pressed the enter key by checking if the line number
-    -- increased. If yes, look if we have to add the semicolon/comma/etc. or
-    -- not.
-    if last_line_num < line_num then
-      TreeSetter.add_character(false)
-    end
-
-    -- refresh the old cursor position
-    last_line_num = line_num
 end
 
 
