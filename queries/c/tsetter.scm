@@ -36,6 +36,10 @@
     right: (_)
 ) @semicolon)
 
+;; Adds '=' for assignments
+((identifier) @equals)
+
+
 ;; --------------
 ;; Functions
 ;; --------------
