@@ -41,6 +41,7 @@ require('nvim-treesitter.configs').setup {
 
 # Contributing
 Take a look into the [CONTRIBUTING.md](https://github.com/filNaj/tree-setter/blob/master/CONTRIBUTING.md) file for that ;)
+Credit to TornaxO7.
 
 ### TODO
 - [ ] Add colon `:` automatically, e.g. for switch cases.

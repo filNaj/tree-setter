@@ -97,6 +97,7 @@ four different predicates for this module which you can use:
 - `@comma`
 - `@double_points`
 - `@skip`
+- `@equals`
 
 Each predicate refers to their appropriate character as the name says. So if
 there should be a comma after a declaration instead, than you can write it as
