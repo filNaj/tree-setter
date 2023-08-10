@@ -23,6 +23,7 @@ local query
 -- not. Take a look into the "TreeSitter.main()` function to see its usage in
 -- action.
 local last_line_num = 0
+local last_col_num = 0
 
 -- ==============
 -- Functions
@@ -31,10 +32,18 @@ local last_line_num = 0
 -- if we need to look if we should add a semicolon/comma/... or not.
 function TreeSetter.main()
     local line_num = vim.api.nvim_win_get_cursor(0)[1]
+    local col_num = vim.api.nvim_win_get_cursor(0)[2]
 
     -- if user is still on the same line, then add an eqauls sing '=' where 
     -- necessary.
     if last_line_num == line_num then
+      -- the below condition will check if the cursor is going to the left
+      -- to delete characters. In that case, don't insert the `=`. This condition
+      -- is necessary since we're still on the same line and we don't want an `=` 
+      -- to be inserted when deleting characters.
+      if col_num < last_col_num then
+        return
+      end
       TreeSetter.add_character(true)
     end
 
@@ -47,6 +56,7 @@ function TreeSetter.main()
 
     -- refresh the old cursor position
     last_line_num = line_num
+    last_col_num = col_num
 end
 
 
