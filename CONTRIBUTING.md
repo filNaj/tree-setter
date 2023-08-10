@@ -48,7 +48,7 @@ to see more details about the queries (of C), open
 probably worth it, since they include some comments which should make it
 understandable) ;).
 
-Let's take a look into the following query-code:
+Let's take a look at the following query code:
 
 ```scheme
 (declaration
@@ -89,7 +89,7 @@ don't know. So we are using an anonymous node!
 
 Ok, but how does the module know if it should add a semicolon, comma or a double
 point? Well, we are doing this by adding this `@`-thing which is called a
-"predicate". Just write after the `@` which character has to be add. If there
+"predicate". Just write after the `@` which character has to be added. If there
 should be a comma instead of a semicolon, then write `@comma` instead. There are
 four different predicates for this module which you can use:
 
@@ -100,7 +100,7 @@ four different predicates for this module which you can use:
 - `@equals`
 
 Each predicate refers to their appropriate character as the name says. So if
-there should be a comma after a declaration instead, than you can write it as
+there should be a comma after a declaration instead, then you can write it as
 follows:
 
 ```scheme
@@ -203,10 +203,10 @@ Here's an example of a C query of `tree-setter/queries/c/tsetter.scm`:
 # Expanding/Improving tree-setter code
 So this is gonna be about the backend of `tree-setter`. You'll get a rough
 overview of how the code works in order to be able to extend the code! So let's
-start with the filestructure first!
+start with the file structure first!
 
-## Filestructure
-Here is the Filestructure with the most important files and a little description
+## File structure
+Here is the File structure with the most important files and a little description
 for them on the right:
 
 ```
@@ -254,9 +254,9 @@ node of the current cursor position and the parent to get a range to test which
 queries match or not.
 
 If we found a match, we're looking which kind of character we need to add
-according to their predicate name like `@semicolon` or @comma`. `@skip` will
+according to their predicate name like `@semicolon` or `@comma`. `@skip` will
 stop the process which tests which queries matches.
 
-In general that's it. Take a look into the comments of the code, to get a more
+In general that's it. Take a look into the comments on the code, to get a more
 detailed explanation. I hope that it roughly helped you to understand the
 backend. Feel free to ask by creating a new issue :)
