@@ -90,6 +90,8 @@ function Setter.set_character(bufnr, line_num, end_column, character)
 
         -- Move the cursor back to the original position
         vim.api.nvim_win_set_cursor(0, {line_num + 1, end_column + 2})
+
+        return
     end
 
 
