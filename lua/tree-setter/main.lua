@@ -100,8 +100,13 @@ function TreeSetter.add_character(is_equals)
                 return
             end
 
-            if is_equals == true and character_type == 'equals' then
+            -- character types: @equals, @semicolon... you can add your own
+            if is_equals == true then
+              if character_type == 'equals' then
                 setter.set_character(0, char_start_row, char_end_column, '=')
+              elseif character_type == 'double_points' then
+                setter.set_character(0, char_start_row, char_end_column, ':')
+              end
             elseif is_equals == false then
               -- Add the given character to the given line
               if character_type == 'semicolon' then
