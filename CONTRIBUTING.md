@@ -12,7 +12,7 @@ a semicolon/comma/double point has to be set! :)
 This should be a little guide on how to write them, which should help you to
 improve `tree-setter`!
 
-### Filestructure
+### File Structure
 Let's start with the file structure first, so you know where to write the
 queries:
 
@@ -33,7 +33,7 @@ for their appropriate language. Each directory (for the language) has a
 that the files are named like that! To sum it up:
 
 1. Look if a directory with the language name exists or not
-    - If yes => Navigate into it
+    - If yes => Navigate to it
     - Otherwise => Create it
 2. Look if there's already a `tsetter.scm` file
     - If yes => Open it in ~~your favourite editor~~ neovim!
@@ -45,7 +45,7 @@ So now we're getting into the interesting part!
 I'm using C as the example language here since it's pretty mature. If you want
 to see more details about the queries (of C), open
 `tree-setter/queries/c/tsetter.scm` in ~~your text-editor~~ neovim (hint, it's
-probably worth it, since they include some comments which should make it
+probably worth it since they include some comments which should make it
 understandable) ;).
 
 Let's take a look at the following query code:
@@ -59,15 +59,14 @@ Let's take a look at the following query code:
 
 We can see a code-tree-structure like code. If you take a look into the tsetter
 file of the C language, you'll see that I picked the first query of it.
-But how did I found out that the query has to look like this in order to let
-TreeSitter know that this is a declaration? Well, I'm using
+But how did I find out that the query has to look like this to let TreeSitter know that this is a declaration? Well, I'm using
 [nvim-treesitter/playground](https://github.com/nvim-treesitter/playground) for
 that. Let's create a new C-file and open up the playground! It'll look like
 this:
 
 ![C query example](./Documentation_Images/TreeSitterPlayground_C_Example.png)
 
-As you can see, there's a similiar structure on the playground:
+As you can see, there's a similar structure on the playground:
 
 ```scheme
 declaration [1, 4] - [1, 10]
@@ -75,15 +74,15 @@ declaration [1, 4] - [1, 10]
     declarator: identifier [1, 8] - [1, 9]
 ```
 
-very nice! So all we need to do, is just writing this query down as it's
+very nice! So all we need to do is just write this query down as it's
 displayed in the playground.
 
-**Note:** Make sure that you removed the semicolon, because sometimes TreeSitter parses
+**Note:** Make sure that you removed the semicolon because sometimes TreeSitter parses
 the query *differently* if there's a semicolon or not!
 
 `(_)` are used, because according to the
 [docs](https://tree-sitter.github.io/tree-sitter/using-parsers#named-vs-anonymous-nodes)
-we can create anonymous nodes. But why? Well, `type` needn't to be always a
+we can create anonymous nodes. But why? Well, `type` needn't be always a
 `primitve_type` (here an `int`). It could also be a char or something else, we
 don't know. So we are using an anonymous node!
 
@@ -114,8 +113,7 @@ This will place a comma after a declaration instead of a semicolon:
 
 ![C example with a semicolon](./Documentation_Images/C_Example.png)
 
-One "exception" is the `@skip` predicate. As the name says, you say TreeSitter,
-that it should *not* check in the current query if a query matches. This happens
+One "exception" is the `@skip` predicate. As the name says, you say TreeSitter, and it should _not_* check in the current query if a query matches. This happens
 for example in the following case (also described in the last lines of the
 `tsetter.scm` file in C):
 
@@ -138,7 +136,7 @@ request ;)
 
 ### Tips
 #### General
-If you want to know more on how to write queries, than you can read it from the
+If you want to know more on how to write queries, then you can read it from the
 [official
 docs](https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax).
 This should explain you some more features and tricks on how to write them :)
@@ -245,7 +243,7 @@ appropriate query for our current language and prepares the autocommands.
 
 `tree-setter` needs to check if the user hits the enter-key. But how can we
 check, if the user pressed the enter key? Well, if the user pressed the enter
-key, than the cursor will move one line down. That's how `tree-setter` tries to
+key, then the cursor will move one line down. That's how `tree-setter` tries to
 detect if the enter-key is pressed without mapping any keys!
 
 The `TreeSetter.main()` function will check if the enter-key is hit, if yes, the
