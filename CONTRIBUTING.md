@@ -83,7 +83,7 @@ the query *differently* if there's a semicolon or not!
 `(_)` are used, because according to the
 [docs](https://tree-sitter.github.io/tree-sitter/using-parsers#named-vs-anonymous-nodes)
 we can create anonymous nodes. But why? Well, `type` needn't be always a
-`primitve_type` (here an `int`). It could also be a char or something else, we
+`primitive_type` (here an `int`). It could also be a char or something else, we
 don't know. So we are using an anonymous node!
 
 Ok, but how does the module know if it should add a semicolon, comma or a double
