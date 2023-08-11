@@ -8,10 +8,18 @@ This plugin is a fork of TornaxO7/tree-setter, but the original repo is incomple
 **Note:** The plugin should work well most of the time, however since it's still very young, it is very possible that it has some bugs. 
 
 **Languages:**
-It supports **Python, JavaScript, Java, and C**, for now.
+It supports many languages. Go inside the **queries** folder to see if your language is supported.
 
 # How it works
 Simply press on the space bar to insert an equals sign (`=`) at the appropriate place e.g. after a variable declaration `int x = 1;` or `x = 1`. For Java and C, press enter at the end of the line to insert a semicolon (`;`). 
+
+**TypeScript** demo:
+
+![demonstration](./Documentation_Images/typescript_demo.gif)
+
+
+**Java**:
+
 ![demonstration](./Documentation_Images/demo.gif)
 
 # Installation
