@@ -41,10 +41,9 @@ function TreeSetter.main()
       -- to delete characters. In that case, don't insert the `=`. This condition
       -- is necessary since we're still on the same line and we don't want an `=` 
       -- to be inserted when deleting characters.
-      if col_num < last_col_num then
-        return
+      if col_num >= last_col_num then
+        TreeSetter.add_character(true)
       end
-      TreeSetter.add_character(true)
     end
 
     -- look if the user pressed the enter key by checking if the line number
