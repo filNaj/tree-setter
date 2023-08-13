@@ -8,6 +8,15 @@
   (identifier) @equals
 )
 
+;; For declarations using the 'self' keyword
+;; Example:
+;;      self.x = 12
+(expression_statement
+  (attribute) @equals
+)
+
+
+
 ;; ====================
 ;; Lists and Dicts
 ;; ====================
