@@ -78,7 +78,7 @@ function Setter.set_character(bufnr, line_num, end_column, character)
         -- if line already contains '=', don't add another one
         -- also check if the last character isn't a space character
         -- then don't add anything.
-        if line:find('=') or line:sub(-1) ~= ' ' then
+        if line:find('=') or line:find(',') or line:sub(-1) ~= ' ' then
           return
         end
 
