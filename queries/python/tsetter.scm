@@ -15,6 +15,13 @@
   (attribute) @equals
 )
 
+;; For index declarations
+;; Example:
+;;      foo = ["bar"]
+;;      foo[0]
+(expression_statement
+  (subscript) @equals
+)
 
 
 ;; ====================
