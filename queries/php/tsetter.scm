@@ -18,3 +18,12 @@
 (expression_statement
   (subscript_expression) @equals
   )
+
+
+;; --------------
+;; Statement/Expressions
+;; --------------
+;; PHP variable declaration
+;; Example:
+;;      $foo = 1;
+((expression_statement) @semicolon)
