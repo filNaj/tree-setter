@@ -90,7 +90,7 @@ Ok, but how does the module know if it should add a semicolon, comma or a double
 point? Well, we are doing this by adding this `@`-thing which is called a
 "predicate". Just write after the `@` which character has to be added. If there
 should be a comma instead of a semicolon, then write `@comma` instead. There are
-four different predicates for this module which you can use:
+the following predicates for this module which you can use:
 
 - `@semicolon`
 - `@comma`
