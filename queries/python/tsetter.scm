@@ -1,6 +1,22 @@
 ;; --------------
 ;; Variables
 ;; --------------
+;; Skip async function declarations
+;; Example:
+;;      async def
+(expression_statement
+  (identifier) @skip
+  (#lua-match? @skip "^async%s*$")
+)
+
+;; Skip await expressions
+;; Example:
+;;      await func()
+(expression_statement
+  (identifier) @skip
+  (#lua-match? @skip "^await%s*$")
+)
+
 ;; For declarations and initialisations
 ;; Example:
 ;;      var_name = 10
@@ -31,14 +47,14 @@
 ;;
 ;;      int_list = [        my_dict = {
 ;;          1,                  1 : "value1",
-;;          2,                  2 : "value2", 
+;;          2,                  2 : "value2",
 ;;          3                   2 : "value3"
 ;;      ]                   }
 ;; But this can also be used for writing something like this:
 ;;
 ;;      int_list [        my_dict {
 ;;          1,                  1 : "value1",
-;;          2,                  2 : "value2", 
+;;          2,                  2 : "value2",
 ;;          3                   2 : "value3"
 ;;      ]                   }
 (ERROR
