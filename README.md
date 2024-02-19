@@ -1,3 +1,11 @@
+# Contributing
+TREESETTER IS SEEKING CONTRIBUTORS TO HELP ADVANCE THE PROJECT'S GROWTH.
+
+
+Take a look into the [CONTRIBUTING.md](https://github.com/filNaj/tree-setter/blob/master/CONTRIBUTING.md) file for that ;)
+Credit to TornaxO7.
+
+
 # TreeSetter
 Never type an equals `=` or a semicolon `;` again! 
 
@@ -47,9 +55,7 @@ require('nvim-treesitter.configs').setup {
 }
 ```
 
-# Contributing
-Take a look into the [CONTRIBUTING.md](https://github.com/filNaj/tree-setter/blob/master/CONTRIBUTING.md) file for that ;)
-Credit to TornaxO7.
+
 
 ### TODO
 - [ ] Add colon `:` automatically, e.g. for switch cases.
