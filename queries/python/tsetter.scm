@@ -17,6 +17,14 @@
   (#lua-match? @skip "^await%s*$")
 )
 
+;; Skip match expressions
+;; Example:
+;;      match foo:
+(expression_statement
+  (identifier) @skip
+  (#lua-match? @skip "^match%s*$")
+)
+
 ;; For declarations and initialisations
 ;; Example:
 ;;      var_name = 10
